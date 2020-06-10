@@ -8,6 +8,8 @@ const NodeCache = require('node-cache');
 const crypto = require('crypto');
 const browserify = require('browserify');
 
+const CODE_LENGTH_LIMIT = 10000;
+
 const cache = new NodeCache({
   stdTTL: 30,
   useClones: false,
@@ -57,8 +59,8 @@ app.post('/', async (req, res) => {
     return;
   }
 
-  if (result.code.length > 3000) {
-    return res.status(400).send('Too much code');
+  if (result.code.length > CODE_LENGTH_LIMIT) {
+    return res.status(400).send({ error: 'Too much code' });
   }
 
   const key = crypto
