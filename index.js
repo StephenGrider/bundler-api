@@ -28,10 +28,8 @@ app.post('/', async (req, res) => {
   }
 
   const code = `
-    ${rawCode.includes('import React ') || "import React from 'react'"};
-    ${
-      rawCode.includes('import ReactDOM ') || "import ReactDOM from 'react-dom'"
-    };
+    ${injectReact(rawCode)}
+    ${injectReactDOM(rawCode)}
 
     ${rawCode}
     (() => {
@@ -134,4 +132,20 @@ function streamToString(stream) {
     stream.on('error', reject);
     stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
   });
+}
+
+function injectReact(rawCode) {
+  if (rawCode.includes('import React ') || rawCode.includes('import React,')) {
+    return '';
+  }
+
+  return "import React from 'react';";
+}
+
+function injectReactDOM(rawCode) {
+  if (rawCode.includes('import ReactDOM ')) {
+    return '';
+  }
+
+  return "import ReactDOM from 'react-dom';";
 }
