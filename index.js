@@ -7,13 +7,14 @@ const babel = require('@babel/core');
 const NodeCache = require('node-cache');
 const crypto = require('crypto');
 const browserify = require('browserify');
+const md5 = require('md5');
 
 const CODE_LENGTH_LIMIT = 10000;
 
 const cache = new NodeCache({
-  stdTTL: 30,
+  stdTTL: 60,
   useClones: false,
-  checkperiod: 14,
+  checkperiod: 15,
 });
 
 const app = express();
@@ -27,6 +28,12 @@ app.post('/', async (req, res) => {
 
   if (!rawCode || typeof rawCode !== 'string') {
     return res.status(400).send({ error: 'You must enter some code' });
+  }
+
+  const key = md5(rawCode);
+
+  if (cache.hasKey(key)) {
+    return res.send({ key });
   }
 
   const code = `
@@ -62,12 +69,6 @@ app.post('/', async (req, res) => {
   if (result.code.length > CODE_LENGTH_LIMIT) {
     return res.status(400).send({ error: 'Too much code' });
   }
-
-  const key = crypto
-    .scryptSync(result.code, 'a', 16, {
-      cost: 4,
-    })
-    .toString('hex');
 
   let dir;
   try {
