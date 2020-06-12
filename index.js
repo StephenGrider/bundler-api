@@ -58,10 +58,7 @@ app.post('/', async (req, res) => {
     });
   } catch (err) {
     res.status(400).send({
-      error: err.message.replace(
-        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-        ''
-      ),
+      error: handleAnsi(err.message),
     });
     return;
   }
@@ -84,6 +81,8 @@ app.post('/', async (req, res) => {
     const code = await streamToString(b.bundle());
     cache.set(key, code);
     res.send({ key });
+  } catch (err) {
+    res.status(400).send({ error: handleAnsi(err.message) });
   } finally {
     if (dir) {
       del(dir);
@@ -152,3 +151,10 @@ function injectReactDOM(rawCode) {
 
   return "import ReactDOM from 'react-dom';";
 }
+
+const handleAnsi = (text) => {
+  return text.replace(
+    /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+    ''
+  );
+};
