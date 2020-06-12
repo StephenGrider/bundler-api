@@ -32,7 +32,7 @@ app.post('/', async (req, res) => {
 
   const key = md5(rawCode);
 
-  if (cache.hasKey(key)) {
+  if (cache.has(key)) {
     return res.send({ key });
   }
 
