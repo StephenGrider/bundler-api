@@ -5,7 +5,6 @@ const path = require('path');
 const cors = require('cors');
 const babel = require('@babel/core');
 const NodeCache = require('node-cache');
-const crypto = require('crypto');
 const browserify = require('browserify');
 const md5 = require('md5');
 
@@ -99,7 +98,7 @@ app.get('/:key', (req, res) => {
   res.send(`
     <html>
       <head>
-        <script src="/common.js"></script>
+        <script src="/bundle.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.css">
         <style>
           body {

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "generate:bundle": "NODE_ENV=production browserify -p tinyify -r react -r react-dom -o public/bundle.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "node-cache": "^5.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "strip-ansi": "^6.0.0"
+    "strip-ansi": "^6.0.0",
+    "tinyify": "^2.5.2"
   }
 }
