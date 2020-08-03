@@ -3,7 +3,7 @@ module.exports = (code) => {
     <html>
       <head>
         <script src="/bundle.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
         <style>
           body {
             margin: 5px;
